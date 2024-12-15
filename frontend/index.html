@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArgoCD app deployment test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+        }
+        form {
+            margin-bottom: 15px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #004099;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .actions button {
+            width: auto;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ArgoCD app deployment test</h1>
+        <p>Interact with the API below:</p>
+
+        <!-- Create Item Form -->
+        <form id="create-form">
+            <h3>Create Item</h3>
+            <input type="text" id="create-name" placeholder="Name" required />
+            <input type="text" id="create-description" placeholder="Description" required />
+            <button type="submit">Add Item</button>
+        </form>
+
+        <!-- Update Item Form -->
+        <form id="update-form">
+            <h3>Update Item</h3>
+            <input type="number" id="update-id" placeholder="Item ID" required />
+            <input type="text" id="update-name" placeholder="New Name" />
+            <input type="text" id="update-description" placeholder="New Description" />
+            <button type="submit">Update Item</button>
+        </form>
+
+        <!-- Delete Item Form -->
+        <form id="delete-form">
+            <h3>Delete Item</h3>
+            <input type="number" id="delete-id" placeholder="Item ID" required />
+            <button type="submit">Delete Item</button>
+        </form>
+
+        <!-- Display Data -->
+        <div>
+            <h3>Data:</h3>
+            <table id="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data rows will be appended here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = '/api/data';
+
+        // Fetch and display data
+        async function fetchData() {
+            const response = await fetch(API_BASE_URL);
+            const data = await response.json();
+
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.description}</td>
+                    <td class="actions">
+                        <button onclick="deleteItem(${item.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Add Item
+        document.getElementById('create-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const name = document.getElementById('create-name').value;
+            const description = document.getElementById('create-description').value;
+
+            await fetch(API_BASE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, description })
+            });
+
+            document.getElementById('create-form').reset();
+            fetchData();
+        });
+
+        // Update Item
+        document.getElementById('update-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const id = document.getElementById('update-id').value;
+            const name = document.getElementById('update-name').value;
+            const description = document.getElementById('update-description').value;
+
+            await fetch(`${API_BASE_URL}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, description })
+            });
+
+            document.getElementById('update-form').reset();
+            fetchData();
+        });
+
+        // Delete Item
+        document.getElementById('delete-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const id = document.getElementById('delete-id').value;
+
+            await fetch(`${API_BASE_URL}/${id}`, {
+                method: 'DELETE'
+            });
+
+            document.getElementById('delete-form').reset();
+            fetchData();
+        });
+
+        // Delete Item (from Actions button)
+        async function deleteItem(id) {
+            await fetch(`${API_BASE_URL}/${id}`, {
+                method: 'DELETE'
+            });
+            fetchData();
+        }
+
+        // Initial Data Fetch
+        fetchData();
+    </script>
+</body>
+</html>
