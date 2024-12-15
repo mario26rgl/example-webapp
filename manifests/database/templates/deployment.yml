@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-webapp-db-deployment
+  namespace: database
+spec:
+  selector:
+    matchLabels:
+      tier: db
+  template:
+    metadata:
+      labels:
+        tier: db
+    spec:
+      containers:
+        - image: mysql:8.0
+          name: db-container
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.dbRootPassword }}
+            - name: MYSQL_DATABASE
+              value: {{ .Values.dbName }}
+          ports:
+            - containerPort: 3306
+              name: mysql-default
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: db-storage
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: db-pvc

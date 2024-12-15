@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-webapp-backend-deployment
+  namespace: backend
+spec:
+  selector:
+    matchLabels:
+      tier: backend
+  template:
+    metadata:
+      labels:
+        tier: backend
+    spec:
+      containers:
+        - image: "mariorgl/webapp-backend:{{ .Values.image_tag }}"
+          name: backend-container
+          ports:
+            - containerPort: 80
+              name: backend-http

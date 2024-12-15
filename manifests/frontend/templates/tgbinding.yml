@@ -1,0 +1,19 @@
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: example-webapp-tgb
+  namespace: frontend
+spec:
+  targetType: ip
+  serviceRef:
+    name: frontend-svc
+    port: frontend
+  ipAddressType: ipv4
+  targetGroupARN: {{ .Values.targetGroupArn }}
+  networking:
+    ingress:
+      - ports:
+          - port: 80
+        from:
+          - securityGroup:
+              groupID: {{ .Values.securityGroupId }}
