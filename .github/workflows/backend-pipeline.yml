@@ -43,14 +43,12 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        cd backend
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/webapp-backend:${{ github.sha }} -f Dockerfile .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/webapp-backend:${{ github.sha }} -f backend/Dockerfile backend/
         docker push ${{ secrets.DOCKER_USERNAME }}/webapp-backend:${{ github.sha }}
 
     # Commit and push the updated values.yaml
     - name: Update Helm chart with new Docker image tag
       run: |
-        cd ..
         sed -i "s|image_tag:.*|image_tag: ${GITHUB_SHA}|" manifests/backend/values.yml
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
