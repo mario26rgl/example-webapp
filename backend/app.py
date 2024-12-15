@@ -1,7 +1,11 @@
+"""
+This module contains the Python + Flask REST API application for the example webapp.
+"""
+
+import time
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
-import time
 
 
 app = Flask(__name__)
@@ -44,7 +48,7 @@ def startup_checks():
             retries -= 1
             time.sleep(2)
     else:
-        raise Exception("ERROR! Failed to connect to the database")
+        raise mysql.connector.Error("ERROR! Failed to connect to the database")
 
 
 @app.route("/")
