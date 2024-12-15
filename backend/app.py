@@ -48,8 +48,12 @@ def startup_checks():
             break
         except mysql.connector.Error:
             retries -= 1
-            time.sleep(2)
+            print("[ERROR! Failed to connect to the database!") 
+            print("ATTEMPT " +  str(6 - retries) + " of 5")
+            time.sleep(7)
     else:
+        print("[ERROR! Failed to connect to the database!") 
+        print("Exiting the application...")
         raise mysql.connector.Error("ERROR! Failed to connect to the database")
 
 
