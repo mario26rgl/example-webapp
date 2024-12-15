@@ -3,6 +3,7 @@ from flask_cors import CORS
 import mysql.connector
 import time
 
+
 app = Flask(__name__)
 
 # Enabling Cross-Origin Resource Sharing (CORS)
