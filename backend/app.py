@@ -1,5 +1,5 @@
 """
-This module contains the Python + Flask REST API application for the example webapp.
+This module contains the Python + Flask REST API application.
 """
 
 import time
