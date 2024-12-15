@@ -26,6 +26,18 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        cd frontend
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/webapp-frontend:${{ github.sha }} -f Dockerfile .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/webapp-frontend:${{ github.sha }} -f frontend/Dockerfile frontend/
         docker push ${{ secrets.DOCKER_USERNAME }}/webapp-frontend:${{ github.sha }}
+
+    # Commit and push the updated values.yaml
+    - name: Update Helm chart with new Docker image tag
+      run: |
+        sed -i "s|image_tag:.*|image_tag: ${GITHUB_SHA}|" manifests/frontend/values.yml
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add manifests/frontend/values.yml
+        git commit -m "Update frontend Docker image tag to ${{ github.sha }}"
+        git push
+      env:
+        GITHUB_SHA: ${{ github.sha }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
