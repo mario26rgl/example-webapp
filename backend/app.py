@@ -1,6 +1,7 @@
 """
 This module contains the Python + Flask REST API application.
 The API is connected to a MySQL database to store and retrieve data.
+Demo:
 """
 
 import time
