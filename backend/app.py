@@ -60,7 +60,7 @@ def startup_checks():
 @app.route("/")
 def home():
     """Home route"""
-    return "Welcome to the Backend API connected to MySQL !"
+    return "Welcome to the Backend API connected to MySQL!"
 
 
 @app.route("/api/data", methods=["GET"])
