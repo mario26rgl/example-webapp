@@ -27,5 +27,5 @@ jobs:
     - name: Build and push Docker image
       run: |
         cd frontend
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }} -f Dockerfile .
-        docker push ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/webapp-frontend:${{ github.sha }} -f Dockerfile .
+        docker push ${{ secrets.DOCKER_USERNAME }}/webapp-frontend:${{ github.sha }}

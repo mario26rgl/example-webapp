@@ -43,5 +43,5 @@ jobs:
     - name: Build and push Docker image
       run: |
         cd backend
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }} -f Dockerfile.backend .
-        docker push ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/webapp-backend:${{ github.sha }} -f Dockerfile.backend .
+        docker push ${{ secrets.DOCKER_USERNAME }}/webapp-backend:${{ github.sha }}
