@@ -1,3 +1,3 @@
-image_tag: 4e5582f9a61de5853f627d0b482147d4e128477b
+image_tag: c6c9ce5a80fc7f0bd041aa6e3836316a0157d91b
 targetGroupArn: arn:aws:elasticloadbalancing:eu-central-1:430781331376:targetgroup/a-http20241214190216040400000001/4a6dd16ed7681477
 securityGroupId: sg-0886646218a60c740
