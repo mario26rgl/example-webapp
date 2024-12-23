@@ -49,10 +49,10 @@ jobs:
     # Commit and push the updated values.yaml
     - name: Update Helm chart with new Docker image tag
       run: |
-        sed -i "s|image_tag:.*|image_tag: ${GITHUB_SHA}|" manifests/backend/values.yml
+        sed -i "s|image_tag:.*|image_tag: ${GITHUB_SHA}|" manifests/backend/values.yaml
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git add manifests/backend/values.yml
+        git add manifests/backend/values.yaml
         git commit -m "Update backend Docker image tag to ${{ github.sha }}"
         git push
       env:
