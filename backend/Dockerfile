@@ -11,6 +11,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY app.py .
 
+# Copy Flake8 configuration
+COPY .flake8 .
+
 # Expose the Flask application port
 EXPOSE 80
 
