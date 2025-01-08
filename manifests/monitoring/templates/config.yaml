@@ -19,3 +19,19 @@ data:
           - source_labels: [__param_service]
             target_label: job
             replacement: flask_app
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-config
+data:
+  datasources.yml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://localhost:9090
+        isDefault: true
