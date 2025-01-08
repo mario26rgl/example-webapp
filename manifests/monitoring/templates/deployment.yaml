@@ -23,13 +23,13 @@ spec:
         - name: grafana
           image: grafana/grafana:latest
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               name: grafana
           env:
             - name: GF_SECURITY_ADMIN_PASSWORD
               value: "newpassword"
             - name: GF_SERVER_HTTP_PORT
-              value: "80"
+              value: "8080"
       volumes:
         - name: prometheus-config
           configMap:
