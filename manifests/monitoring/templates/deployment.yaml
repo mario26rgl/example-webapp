@@ -34,7 +34,6 @@ spec:
           volumeMounts:
             - name: grafana-config
               mountPath: /etc/grafana/provisioning/datasources
-              subPath: datasources.yml
       volumes:
         - name: prometheus-config
           configMap:
