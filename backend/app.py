@@ -8,6 +8,7 @@ import time
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 
 
 app = Flask(__name__)
@@ -21,6 +22,12 @@ db_config = {
     'database': 'example_webapp_db',
     'port': 3306
 }
+
+http_status_counter = Counter(
+    'http_status_codes_total',
+    'Total HTTP response status codes',
+    ['status_code']
+)
 
 
 def get_db_connection():
@@ -61,6 +68,11 @@ def startup_checks():
 def home():
     """Home route"""
     return "Welcome to the Backend API connected to MySQL!"
+
+
+@app.route("/metrics", methods=["GET"])
+def metrics():
+    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
 
 @app.route("/api/data", methods=["GET"])
