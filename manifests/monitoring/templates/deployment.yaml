@@ -28,6 +28,8 @@ spec:
           env:
             - name: GF_SECURITY_ADMIN_PASSWORD
               value: "newpassword"
+            - name: GF_SERVER_HTTP_PORT
+              value: "80"
       volumes:
         - name: prometheus-config
           configMap:
