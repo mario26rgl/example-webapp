@@ -175,12 +175,6 @@ def delete_data(item_id):
         return jsonify({"message": str(e)}), 500
 
 
-@app.route("/metrics", methods=["GET"])
-def metrics():
-    """Prometheus metrics endpoint"""
-    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
-
-
 if __name__ == "__main__":
     startup_checks()
     app.run(host="0.0.0.0", port=80, debug=True)
