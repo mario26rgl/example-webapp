@@ -72,6 +72,7 @@ def home():
 
 @app.route("/metrics", methods=["GET"])
 def metrics():
+    """Prometheus metrics route"""
     return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 
 
