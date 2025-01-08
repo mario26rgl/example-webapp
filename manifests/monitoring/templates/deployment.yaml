@@ -12,12 +12,12 @@ spec:
       labels:
         tier: monitoring
     spec:
+      serviceAccountName: prometheus-sa
       containers:
         - name: prometheus
           image: prom/prometheus:latest
           args:
             - '--config.file=/etc/prometheus/prometheus.yml'
-          serviceAccountName: prometheus-sa
           volumeMounts:
             - name: prometheus-config
               mountPath: /etc/prometheus
