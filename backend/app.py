@@ -79,18 +79,14 @@ def metrics():
 @app.route("/api/data", methods=["GET"])
 def get_data():
     """Read all data"""
-    try:
-        connection = get_db_connection()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM items")
-        data = cursor.fetchall()
-        cursor.close()
-        connection.close()
-        http_status_counter.labels(status_code=200).inc()
-        return jsonify(data), 200
-    except Exception as e:  # noqa: W0718
-        http_status_counter.labels(status_code=500).inc()
-        return jsonify({"message": str(e)}), 500
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM items")
+    data = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    http_status_counter.labels(status_code=200).inc()
+    return jsonify(data), 200
 
 
 @app.route("/api/data", methods=["POST"])
@@ -104,22 +100,18 @@ def create_data():
         http_status_counter.labels(status_code=400).inc()
         return jsonify({"message": "Invalid input"}), 400
 
-    try:
-        connection = get_db_connection()
-        cursor = connection.cursor()
-        cursor.execute(
-            "INSERT INTO items (name, description) VALUES (%s, %s)",
-            (name, description)
-        )
-        connection.commit()
-        new_id = cursor.lastrowid
-        cursor.close()
-        connection.close()
-        http_status_counter.labels(status_code=201).inc()
-        return jsonify({"message": "Item added", "id": new_id}), 201
-    except Exception as e:  # noqa: W0718
-        http_status_counter.labels(status_code=500).inc()
-        return jsonify({"message": str(e)}), 500
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute(
+        "INSERT INTO items (name, description) VALUES (%s, %s)",
+        (name, description)
+    )
+    connection.commit()
+    new_id = cursor.lastrowid
+    cursor.close()
+    connection.close()
+    http_status_counter.labels(status_code=201).inc()
+    return jsonify({"message": "Item added", "id": new_id}), 201
 
 
 @app.route("/api/data/<int:item_id>", methods=["PUT"])
@@ -129,50 +121,42 @@ def update_data(item_id):
     name = updated_item.get("name")
     description = updated_item.get("description")
 
-    try:
-        connection = get_db_connection()
-        cursor = connection.cursor()
-        cursor.execute(
-            "UPDATE items SET name = %s, description = %s WHERE id = %s",
-            (name, description, item_id)
-        )
-        connection.commit()
-        rowcount = cursor.rowcount
-        cursor.close()
-        connection.close()
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute(
+        "UPDATE items SET name = %s, description = %s WHERE id = %s",
+        (name, description, item_id)
+    )
+    connection.commit()
+    rowcount = cursor.rowcount
+    cursor.close()
+    connection.close()
 
-        if rowcount == 0:
-            http_status_counter.labels(status_code=404).inc()
-            return jsonify({"message": "Item not found"}), 404
+    if rowcount == 0:
+        http_status_counter.labels(status_code=404).inc()
+        return jsonify({"message": "Item not found"}), 404
 
-        http_status_counter.labels(status_code=200).inc()
-        return jsonify({"message": "Item updated"}), 200
-    except Exception as e:  # noqa: W0718
-        http_status_counter.labels(status_code=500).inc()
-        return jsonify({"message": str(e)}), 500
+    http_status_counter.labels(status_code=200).inc()
+    return jsonify({"message": "Item updated"}), 200
 
 
 @app.route("/api/data/<int:item_id>", methods=["DELETE"])
 def delete_data(item_id):
     """Delete a data item"""
-    try:
-        connection = get_db_connection()
-        cursor = connection.cursor()
-        cursor.execute("DELETE FROM items WHERE id = %s", (item_id,))
-        connection.commit()
-        rowcount = cursor.rowcount
-        cursor.close()
-        connection.close()
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("DELETE FROM items WHERE id = %s", (item_id,))
+    connection.commit()
+    rowcount = cursor.rowcount
+    cursor.close()
+    connection.close()
 
-        if rowcount == 0:
-            http_status_counter.labels(status_code=404).inc()
-            return jsonify({"message": "Item not found"}), 404
+    if rowcount == 0:
+        http_status_counter.labels(status_code=404).inc()
+        return jsonify({"message": "Item not found"}), 404
 
-        http_status_counter.labels(status_code=200).inc()
-        return jsonify({"message": "Item deleted"}), 200
-    except Exception as e:  # noqa: W0718
-        http_status_counter.labels(status_code=500).inc()
-        return jsonify({"message": str(e)}), 500
+    http_status_counter.labels(status_code=200).inc()
+    return jsonify({"message": "Item deleted"}), 200
 
 
 if __name__ == "__main__":
