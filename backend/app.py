@@ -8,6 +8,7 @@ import time
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
+from mysql.connector import Error as MySQLError
 from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 
 
@@ -117,7 +118,10 @@ def create_data():
         connection.close()
         http_status_counter.labels(status_code=201).inc()
         return jsonify({"message": "Item added", "id": new_id}), 201
-    except Exception as e:    # noqa: Database connection errors are handled elsewhere
+    except MySQLError as e:
+        http_status_counter.labels(status_code=500).inc()
+        return jsonify({"message": f"Database error: {e}"}), 500
+    except Exception as e:
         http_status_counter.labels(status_code=500).inc()
         return jsonify({"message": str(e)}), 500
 
@@ -147,7 +151,10 @@ def update_data(item_id):
 
         http_status_counter.labels(status_code=200).inc()
         return jsonify({"message": "Item updated"}), 200
-    except Exception as e:    # noqa: Database connection errors are handled elsewhere
+    except MySQLError as e:
+        http_status_counter.labels(status_code=500).inc()
+        return jsonify({"message": f"Database error: {e}"}), 500
+    except Exception as e:
         http_status_counter.labels(status_code=500).inc()
         return jsonify({"message": str(e)}), 500
 
@@ -170,7 +177,10 @@ def delete_data(item_id):
 
         http_status_counter.labels(status_code=200).inc()
         return jsonify({"message": "Item deleted"}), 200
-    except Exception as e:    # noqa: Database connection errors are handled elsewhere
+    except MySQLError as e:
+        http_status_counter.labels(status_code=500).inc()
+        return jsonify({"message": f"Database error: {e}"}), 500
+    except Exception as e:
         http_status_counter.labels(status_code=500).inc()
         return jsonify({"message": str(e)}), 500
 
