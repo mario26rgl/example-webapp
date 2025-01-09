@@ -84,6 +84,25 @@ data:
                     }
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byRegexp",
+                  "options": "/404/"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "404"
+                  },
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "red",
+                      "mode": "shades"
+                    }
+                  }
+                ]
               }
             ]
           },
@@ -117,7 +136,7 @@ data:
             },
             "tooltip": {
               "mode": "single",
-              "sort": "none"
+              "sort": "asc"
             }
           },
           "pluginVersion": "11.4.0",
@@ -157,6 +176,6 @@ data:
       "timezone": "browser",
       "title": "Flask REST API",
       "uid": "de9ghddamzh8ga",
-      "version": 3,
+      "version": 1,
       "weekStart": ""
     }
