@@ -34,6 +34,10 @@ spec:
           volumeMounts:
             - name: grafana-config
               mountPath: /etc/grafana/provisioning/datasources
+            - name: grafana-dash-config
+              mountPath: /etc/grafana/provisioning/dashboards
+            - name: grafana-dash-json
+              mountPath: /etc/grafana/provisioning/dashboards/json
       volumes:
         - name: prometheus-config
           configMap:
@@ -41,3 +45,9 @@ spec:
         - name: grafana-config
           configMap:
             name: grafana-config
+        - name: grafana-dash-config
+          configMap:
+            name: grafana-dash-config
+        - name: grafana-dash-json
+          configMap:
+            name: grafana-dash-json
