@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring
+  name: backend
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/mario26rgl/example-webapp.git'
-    targetRevision: main
-    path: manifests/monitoring
+    targetRevision: {{ .Values.branch }}
+    path: manifests/backend
   destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
+    server: {{ .Values.cluster }}
+    namespace: backend
   syncPolicy:
     automated:
       prune: true

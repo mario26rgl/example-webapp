@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/mario26rgl/example-webapp.git'
-    targetRevision: main
+    targetRevision: vdf-dev
     path: manifests/apps
   destination:
     server: https://kubernetes.default.svc

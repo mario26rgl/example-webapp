@@ -1,2 +1,2 @@
-targetGroupArn: arn:aws:elasticloadbalancing:eu-central-1:430781331376:targetgroup/a-http20250108182407627800000001/72105d0ca1d2dd1a
-securityGroupId: sg-0886646218a60c740
+targetGroupArn: arn:aws:elasticloadbalancing:eu-central-1:430781331376:targetgroup/a-http20250123143116060900000002/86a27fa636868d3e
+securityGroupId: sg-0313c150fdee535c8

@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: backend
+  name: frontend
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/mario26rgl/example-webapp.git'
-    targetRevision: main
-    path: manifests/backend
+    targetRevision: {{ .Values.branch }}
+    path: manifests/frontend
   destination:
-    server: https://kubernetes.default.svc
-    namespace: backend
+    server: {{ .Values.cluster }}
+    namespace: frontend
   syncPolicy:
     automated:
       prune: true
